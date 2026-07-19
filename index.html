@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -9,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
-    /* ─── TOKENS ─────────────────────────────────────────────── */
+    /* ─── TOKENS DARK (default) ──────────────────────────────── */
     :root {
       --navy:       #0A0F1E;
       --navy-mid:   #111827;
@@ -27,6 +26,65 @@
       --font-body:    'Inter', sans-serif;
     }
 
+    /* ─── LIGHT MODE TOKENS ──────────────────────────────────── */
+    body.light {
+      --navy:       #F4F6FB;
+      --navy-mid:   #E8EDF5;
+      --navy-light: #D8E1EE;
+      --navy-card:  #FFFFFF;
+      --indigo:     #4338CA;
+      --indigo-glow:#4F46E5;
+      --gold:       #92680A;
+      --gold-light: #7A5508;
+      --off-white:  #111827;
+      --muted:      #4B5563;
+      --border:     rgba(67,56,202,0.15);
+      --rail:       rgba(67,56,202,0.3);
+    }
+    body.light nav {
+      background: rgba(244,246,251,0.88);
+    }
+    body.light .mobile-menu {
+      background: rgba(244,246,251,0.98);
+    }
+    body.light .hero-grid-bg {
+      background-image:
+        linear-gradient(rgba(67,56,202,0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(67,56,202,0.1) 1px, transparent 1px);
+    }
+    body.light .hero-glow {
+      background: radial-gradient(circle, rgba(67,56,202,0.12) 0%, transparent 70%);
+    }
+    body.light ::-webkit-scrollbar-track { background: #F4F6FB; }
+    body.light .edu-rank { background: rgba(146,104,10,0.06); border-color: rgba(146,104,10,0.2); }
+    body.light .highlight-box { background: rgba(67,56,202,0.05); }
+    body.light .stat-item { background: rgba(67,56,202,0.06); }
+    body.light .project-header { background: linear-gradient(135deg, rgba(67,56,202,0.05) 0%, transparent 100%); }
+    body.light .tag { background: rgba(67,56,202,0.05); }
+    body.light .edu-badge { background: rgba(67,56,202,0.1); }
+    body.light .badge-internship { background: rgba(67,56,202,0.1); }
+    body.light .badge-research   { background: rgba(146,104,10,0.08); }
+    body.light .badge-teaching   { background: rgba(5,150,105,0.08); color: #065f46; }
+    body.light .badge-other      { background: rgba(107,114,128,0.1); color: #374151; }
+    body.light .flag-flagship { background: rgba(146,104,10,0.1); }
+    body.light .flag-academic { background: rgba(67,56,202,0.1); }
+    body.light .flag-ml       { background: rgba(5,150,105,0.08); color: #065f46; }
+    body.light .btn-pdf { background: rgba(146,104,10,0.08); border-color: rgba(146,104,10,0.25); }
+    body.light .btn-pdf:hover { background: rgba(146,104,10,0.15); }
+
+    /* ─── THEME TOGGLE BUTTON ────────────────────────────────── */
+    .theme-toggle {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      font-family: var(--font-display); font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 0.38rem 0.9rem; border-radius: 20px; cursor: pointer;
+      border: 1px solid var(--border); color: var(--muted);
+      background: transparent; transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .theme-toggle:hover { border-color: var(--indigo); color: var(--off-white); }
+    .theme-toggle .toggle-icon { font-size: 0.85rem; line-height: 1; }
+
     /* ─── RESET ──────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; font-size: 16px; }
@@ -36,6 +94,7 @@
       font-family: var(--font-body);
       line-height: 1.65;
       overflow-x: hidden;
+      transition: background 0.3s, color 0.3s;
     }
     a { color: inherit; text-decoration: none; }
     img { display: block; max-width: 100%; }
@@ -63,6 +122,7 @@
       color: var(--off-white);
     }
     .nav-logo span { color: var(--indigo); }
+    .nav-right { display: flex; align-items: center; gap: 1.8rem; }
     .nav-links {
       display: flex; gap: 2.4rem;
       list-style: none;
@@ -207,41 +267,57 @@
     }
     .section-desc { color: var(--muted); font-size: 1.05rem; margin-top: 0.8rem; max-width: 520px; }
 
-    /* ─── EDUCATION ──────────────────────────────────────────── */
+    /* ─── EDUCATION — TIMELINE STYLE ─────────────────────────── */
     #education { background: var(--navy-mid); }
-    .edu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5px; }
+    .edu-timeline { position: relative; padding-left: 32px; }
+    .edu-timeline::before {
+      content: ''; position: absolute; left: 8px; top: 0; bottom: 0;
+      width: 1px; background: var(--rail);
+    }
+    .edu-item { position: relative; margin-bottom: 2.5rem; }
+    .edu-item:last-child { margin-bottom: 0; }
+    .edu-dot {
+      position: absolute; left: -28px; top: 1.4rem;
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--navy-mid); border: 2px solid var(--indigo);
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .edu-item:hover .edu-dot {
+      background: var(--indigo);
+      box-shadow: 0 0 0 4px rgba(79,70,229,0.2);
+    }
     .edu-card {
       background: var(--navy-card);
-      padding: 2.4rem 2rem;
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 1.8rem 2rem;
       position: relative; overflow: hidden;
-      transition: transform 0.25s, box-shadow 0.25s;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
     }
-    .edu-card::before {
-      content: ''; position: absolute; top: 0; left: 0;
-      width: 3px; height: 100%;
-      background: linear-gradient(to bottom, var(--indigo), transparent);
-      transform: scaleY(0); transform-origin: top;
-      transition: transform 0.35s ease;
+    .edu-item:hover .edu-card {
+      border-color: rgba(79,70,229,0.5); transform: translateX(4px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.35);
     }
-    .edu-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
-    .edu-card:hover::before { transform: scaleY(1); }
     .edu-badge {
       display: inline-block; font-family: var(--font-display); font-size: 0.68rem;
       font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
       padding: 0.25rem 0.65rem; border-radius: 3px;
       background: rgba(79,70,229,0.15); color: var(--indigo);
-      margin-bottom: 1.2rem;
+      margin-bottom: 0.7rem;
+    }
+    .edu-meta {
+      display: flex; flex-wrap: wrap; align-items: center;
+      gap: 0.6rem; margin-bottom: 0.8rem;
     }
     .edu-year {
-      font-family: var(--font-display); font-size: 0.75rem; font-weight: 500;
-      color: var(--gold); letter-spacing: 0.08em; margin-bottom: 0.5rem;
+      font-family: var(--font-display); font-size: 0.72rem; font-weight: 500;
+      color: var(--gold); letter-spacing: 0.07em;
     }
     .edu-card h3 {
       font-family: var(--font-display); font-size: 1.05rem; font-weight: 600;
-      color: var(--off-white); line-height: 1.35; margin-bottom: 0.5rem;
+      color: var(--off-white); line-height: 1.35; margin-bottom: 0.25rem;
     }
     .edu-school {
-      font-size: 0.88rem; color: var(--indigo-glow); font-weight: 500; margin-bottom: 0.9rem;
+      font-size: 0.85rem; color: var(--indigo-glow); font-weight: 500; margin-bottom: 0.9rem;
     }
     .edu-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
     .edu-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.2rem; }
@@ -252,7 +328,7 @@
       border: 1px solid rgba(79,70,229,0.25); color: var(--muted);
     }
     .edu-rank {
-      margin-top: 1.2rem; padding: 0.8rem 1rem;
+      margin-top: 1rem; padding: 0.8rem 1rem;
       background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.2);
       border-radius: 4px; font-size: 0.78rem; color: var(--gold-light); line-height: 1.5;
     }
@@ -319,6 +395,7 @@
     .badge-internship { background: rgba(79,70,229,0.15); color: var(--indigo-glow); }
     .badge-research   { background: rgba(201,168,76,0.12); color: var(--gold-light); }
     .badge-teaching   { background: rgba(16,185,129,0.12); color: #34d399; }
+    .badge-other      { background: rgba(107,114,128,0.15); color: #9CA3AF; }
     .exp-card h3 {
       font-family: var(--font-display); font-size: 1.08rem; font-weight: 600;
       color: var(--off-white); margin-bottom: 0.25rem;
@@ -394,8 +471,7 @@
       display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0;
     }
     .stat-item {
-      text-align: center;
-      flex: 1; min-width: 80px;
+      text-align: center; flex: 1; min-width: 80px;
       padding: 0.6rem; background: rgba(79,70,229,0.07); border-radius: 5px;
     }
     .stat-value {
@@ -410,8 +486,27 @@
     .project-footer {
       padding: 1rem 1.8rem;
       border-top: 1px solid var(--border);
-      display: flex; flex-wrap: wrap; gap: 0.4rem;
+      display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center;
     }
+
+    /* ─── PDF BUTTON ─────────────────────────────────────────── */
+    .btn-pdf {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-family: var(--font-display); font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0.3rem 0.8rem; border-radius: 4px;
+      background: rgba(201,168,76,0.12);
+      border: 1px solid rgba(201,168,76,0.3);
+      color: var(--gold-light);
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+      margin-left: auto;
+    }
+    .btn-pdf:hover {
+      background: rgba(201,168,76,0.22);
+      border-color: var(--gold-light);
+      transform: translateY(-1px);
+    }
+    .btn-pdf svg { width: 13px; height: 13px; flex-shrink: 0; }
 
     /* ─── CONTACT ────────────────────────────────────────────── */
     #contact {
@@ -460,8 +555,9 @@
       .nav-links { display: none; }
       .nav-hamburger { display: flex; }
       section { padding: 70px 5%; }
-      .exp-timeline { padding-left: 22px; }
+      .exp-timeline, .edu-timeline { padding-left: 22px; }
       .projects-grid { grid-template-columns: 1fr; }
+      .theme-toggle .toggle-label { display: none; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -474,12 +570,18 @@
 <!-- ── NAV ─────────────────────────────────────────────────────── -->
 <nav>
   <div class="nav-logo">Sacha<span>.</span></div>
-  <ul class="nav-links">
-    <li><a href="#education">Education</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#education">Education</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle colour mode">
+      <span class="toggle-icon">☀️</span>
+      <span class="toggle-label">Light</span>
+    </button>
+  </div>
   <div class="nav-hamburger" id="hamburger" aria-label="Menu">
     <span></span><span></span><span></span>
   </div>
@@ -526,40 +628,54 @@
   <div class="section-header reveal">
     <h2>Education</h2>
   </div>
-  <div class="edu-grid">
 
-    <div class="edu-card reveal">
-      <div class="edu-badge">Master's Degree</div>
-      <div class="edu-year">2024 – 2026</div>
-      <h3>MSc Economics of Global Risks</h3>
-      <div class="edu-school">Toulouse School of Economics (TSE)</div>
-      <p class="edu-desc"> Advanced training in Statistics, Econometrics, Finance, Time Series Analysis, Machine Learning, and Risk Theory. Applied advanced quantitative methods to global systemic risks including financial crises, climate risk, and market failures.
-      <div class="edu-rank">
-        🏆 TSE ranked <strong>Top 15 Economics Schools worldwide</strong> (Shanghai Ranking) — 1st in France, 3rd in Europe.
-      </p>Merit-Based Scholarship for the M2 Program based on my academic record.</p>
-      </div>
-    </div>
+  <div class="edu-timeline">
 
-    <div class="edu-card reveal">
-      <div class="edu-badge">Bachelor's Degree</div>
-      <div class="edu-year">2021 – 2024</div>
-      <h3>Bachelor in Economics </h3>
-      <div class="edu-school">Toulouse School of Economics (TSE)</div>
-      <p class="edu-desc">Specialised curriculum in Economics bringing strong foundation in macro and microeconomics theory, along with a broad introduction to the social sciences and quantitative methods in the social sciences. </p>
-      <div class="edu-rank">
-        Ranked in the top 3% (7/309) in the second year to be eligible for admission to TSE in the third year based on academic record.
+    <!-- MSc -->
+    <div class="edu-item reveal">
+      <div class="edu-dot"></div>
+      <div class="edu-card">
+        <div class="edu-meta">
+          <div class="edu-badge">Master's Degree</div>
+          <span class="edu-year">2024 – 2026</span>
+        </div>
+        <h3>MSc Economics of Global Risks</h3>
+        <div class="edu-school">Toulouse School of Economics (TSE)</div>
+        <p class="edu-desc">Advanced training in Statistics, Econometrics, Finance, Time Series Analysis, Machine Learning, and Risk Theory. Applied advanced quantitative methods to global systemic risks including financial crises, climate risk, and market failures.</p>
+        <div class="edu-rank">
+          🏆 TSE ranked <strong>Top 15 Economics Schools worldwide</strong> (Shanghai Ranking) — 1st in France, 3rd in Europe.<br>Merit-Based Scholarship for the M2 Program based on my academic record.
         </div>
       </div>
     </div>
 
-    <div class="edu-card reveal">
-      <div class="edu-badge">High School's Degree</div>
-      <div class="edu-year">2018 – 2021</div>
-      <h3>Baccalaureat in Mathematics and Economics Social Sciences</h3>
-      <div class="edu-school">Marcel Gimond High school</div>
-      <div class="edu-rank">
-        With honours
+    <!-- Bachelor -->
+    <div class="edu-item reveal">
+      <div class="edu-dot"></div>
+      <div class="edu-card">
+        <div class="edu-meta">
+          <div class="edu-badge">Bachelor's Degree</div>
+          <span class="edu-year">2021 – 2024</span>
+        </div>
+        <h3>Bachelor in Economics</h3>
+        <div class="edu-school">Toulouse School of Economics (TSE)</div>
+        <p class="edu-desc">Specialised curriculum in Economics bringing strong foundation in macro and microeconomics theory, along with a broad introduction to the social sciences and quantitative methods in the social sciences.</p>
+        <div class="edu-rank">
+          Ranked in the top 3% (7/309) in the second year to be eligible for admission to TSE in the third year based on academic record.
+        </div>
       </div>
+    </div>
+
+    <!-- Bac -->
+    <div class="edu-item reveal">
+      <div class="edu-dot"></div>
+      <div class="edu-card">
+        <div class="edu-meta">
+          <div class="edu-badge">High School's Degree</div>
+          <span class="edu-year">2018 – 2021</span>
+        </div>
+        <h3>Baccalaureat in Mathematics and Economics Social Sciences</h3>
+        <div class="edu-school">Marcel Gimond High School</div>
+        <div class="edu-rank">With honours</div>
       </div>
     </div>
 
@@ -577,7 +693,6 @@
     <button class="filter-btn" data-filter="internship">Internship</button>
     <button class="filter-btn" data-filter="teaching">Teaching</button>
     <button class="filter-btn" data-filter="other">Other</button>
-
   </div>
 
   <div class="exp-timeline">
@@ -587,17 +702,15 @@
       <div class="exp-dot"></div>
       <div class="exp-card">
         <div class="exp-meta">
-          <span class="exp-period">April – October 2026 </span>
+          <span class="exp-period">April – October 2026</span>
           <span class="exp-type-badge badge-internship">Internship</span>
         </div>
         <h3>Data Analyst/Scientist — Corporate Audit</h3>
         <div class="exp-org">Airbus</div>
         <div class="exp-desc">
           <p>Embedded within the Corporate Audit department of the global leader of aeronautic.</p>
-          </p>Analysis of multiple corporate audit databases to identify operational anomalies. 
-            Development of data-driven reporting tools; process automation / data engineering.
-            Deployment of generative AI tools within the department to support auditor and increase efficiency.</p>
-          <p>Technical Stack: Skywise(Airbus Data platform), Python, PySpark, Qlik Sense (Data viz), Google Workspace (Gsheet, Gslide, Gdoc), Gemini (Gen AI)</p>
+          <p>Analysis of multiple corporate audit databases to identify operational anomalies. Development of data-driven reporting tools; process automation / data engineering. Deployment of generative AI tools within the department to support auditor and increase efficiency.</p>
+          <p>Technical Stack: Skywise (Airbus Data platform), Python, PySpark, Qlik Sense (Data viz), Google Workspace (Gsheet, Gslide, Gdoc), Gemini (Gen AI)</p>
         </div>
         <div class="highlight-box">
           <strong>Flagship deliverable:</strong> Designed a multi-criteria risk scoring tool covering 15 risk dimensions across all 500+ Airbus subsidiaries — combining linear scaling method, segmentation, and external indicators. Output used directly by the management board to define the <strong>2027 Audit Plan</strong> (Check the "Projects" section for more details).
@@ -616,11 +729,11 @@
         <h3>Research Assistant in Econometrics/Time Series</h3>
         <div class="exp-org">Jean-Jacques Laffont Foundation</div>
         <div class="exp-desc">
-          <p>Contributed to empirical research projects on econometrics/time series within the JJL Foundation, one of the world's most cited applied economics institutes.  <p>
-          <p>Monte Carlo simulation and estimation of dynamic models; Study of fat tails distributions and models; collection and cleaning of financial data; review of various research articles. <p>
-          <p>Technical Stack: R, Excel, LaTeX. <p>
+          <p>Contributed to empirical research projects on econometrics/time series within the JJL Foundation, one of the world's most cited applied economics institutes.</p>
+          <p>Monte Carlo simulation and estimation of dynamic models; Study of fat tails distributions and models; collection and cleaning of financial data; review of various research articles.</p>
+          <p>Technical Stack: R, Excel, LaTeX.</p>
         </div>
-        </div>
+      </div>
     </div>
 
     <!-- Teaching Assistant -->
@@ -634,20 +747,20 @@
         <h3>Teaching Assistant — Microeconomics</h3>
         <div class="exp-org">Toulouse School of Economics</div>
         <div class="exp-desc">
-          <p>Leading tutorial sessions for 30+ first-year undergraduate economics students. Preparing exercises on microeconomic theory and quantitative methods. This course was taught whilst I was studying for my Master’s 2.</p>
+          <p>Leading tutorial sessions for 30+ first-year undergraduate economics students. Preparing exercises on microeconomic theory and quantitative methods. This course was taught whilst I was studying for my Master's 2.</p>
         </div>
       </div>
     </div>
 
     <!-- Restauration -->
-     <div class="exp-item reveal" data-type="other">
+    <div class="exp-item reveal" data-type="other">
       <div class="exp-dot"></div>
       <div class="exp-card">
         <div class="exp-meta">
           <span class="exp-period">Summer 2021, 2022, 2023, 2024 | Winter 2023</span>
           <span class="exp-type-badge badge-other">Other</span>
         </div>
-        <h3>Seasonal Jobs in the Restaurant Industry </h3>
+        <h3>Seasonal Jobs in the Restaurant Industry</h3>
         <div class="exp-org">McDonald's and rural restaurant</div>
         <div class="exp-desc">
           <p>Seasonal work during my college years to help cover the cost of my education in a city far from my hometown.</p>
@@ -676,16 +789,19 @@
       </div>
       <div class="project-body">
         <p>Engineered a comprehensive risk scoring framework covering all Airbus 500+ subsidiaries across 15 heterogeneous risk criteria. The system combines linear scaling, segmentation, and integration of external indices.</p>
-        <p> The work combines data collection and cleaning from 10+ different sources; automation using PySpark and data engineering using Skywise (Data platform of Airbus). The automation save 2 weeks of work per year compared to the last version of the tool.
-        <p> The output is an automated and interactive dashboard combining the risk table scores, an ID risk card by entities including multiple information such as revenues, ftes etc. And different relevant visualizations graphs.
-        <p>This dahsboard was asked and used directly by the Airbus management board to define the scope and priorities of the <strong>2027 Audit Plan</strong> to detect the more risky entities.
-        </p>
-        </div>
+        <p>The work combines data collection and cleaning from 10+ different sources; automation using PySpark and data engineering using Skywise (Data platform of Airbus). The automation save 2 weeks of work per year compared to the last version of the tool.</p>
+        <p>The output is an automated and interactive dashboard combining the risk table scores, an ID risk card by entities including multiple information such as revenues, ftes etc. And different relevant visualizations graphs.</p>
+        <p>This dashboard was asked and used directly by the Airbus management board to define the scope and priorities of the <strong>2027 Audit Plan</strong> to detect the more risky entities.</p>
+      </div>
       <div class="project-footer">
         <span class="skill-chip">PySpark</span>
         <span class="skill-chip">Risk Modelling</span>
         <span class="skill-chip">Risk Scoring</span>
         <span class="skill-chip">Automation</span>
+        <a href="airbus-risk-scoring.pdf" target="_blank" class="btn-pdf">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Report
+        </a>
       </div>
     </div>
 
@@ -706,6 +822,10 @@
         <span class="skill-chip">Credit Risk</span>
         <span class="skill-chip">Merton Model</span>
         <span class="skill-chip">Altman Z-Score</span>
+        <a href="corporate-default-risk.pdf" target="_blank" class="btn-pdf">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Report
+        </a>
       </div>
     </div>
 
@@ -726,6 +846,10 @@
         <span class="skill-chip">VaR</span>
         <span class="skill-chip">Expected Shortfall</span>
         <span class="skill-chip">Insurance Risk</span>
+        <a href="evt-health-insurance.pdf" target="_blank" class="btn-pdf">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Report
+        </a>
       </div>
     </div>
 
@@ -747,6 +871,10 @@
         <span class="skill-chip">SMOTE-NC</span>
         <span class="skill-chip">AdaBoost</span>
         <span class="skill-chip">AUROC</span>
+        <a href="credit-scoring-ml.pdf" target="_blank" class="btn-pdf">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Report
+        </a>
       </div>
     </div>
 
@@ -767,6 +895,10 @@
         <span class="skill-chip">GARCH</span>
         <span class="skill-chip">Box-Jenkins</span>
         <span class="skill-chip">Volatility Modelling</span>
+        <a href="time-series-garch.pdf" target="_blank" class="btn-pdf">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Report
+        </a>
       </div>
     </div>
 
@@ -788,9 +920,14 @@
         <span class="skill-chip">IRF</span>
         <span class="skill-chip">Granger Causality</span>
         <span class="skill-chip">FEVD</span>
+        <a href="panel-var-vecm.pdf" target="_blank" class="btn-pdf">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Report
+        </a>
       </div>
     </div>
 
+    <!-- Environmental Economics -->
     <div class="project-card reveal">
       <div class="project-header">
         <div class="project-icon">🌐</div>
@@ -805,6 +942,10 @@
         <span class="skill-chip">R</span>
         <span class="skill-chip">Panel data</span>
         <span class="skill-chip">Environmental Economics</span>
+        <a href="environmental-economics.pdf" target="_blank" class="btn-pdf">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Report
+        </a>
       </div>
     </div>
 
@@ -834,7 +975,7 @@
   </div>
 </section>
 
-<!-- ── FOOTER ─────────────────────────────────────────────────────── -->
+<!-- ── FOOTER ─────────────────────────────────────────────────────── */
 <footer>
   <p>© 2025 Sacha Sagratella — Built with <span>♥</span> & vanilla HTML</p>
   <p>Toulouse School of Economics · Data Analyst & Economist</p>
@@ -842,6 +983,22 @@
 
 <!-- ── SCRIPTS ────────────────────────────────────────────────────── -->
 <script>
+  // ── Theme toggle
+  const themeBtn = document.getElementById('themeToggle');
+  const icon = themeBtn.querySelector('.toggle-icon');
+  const label = themeBtn.querySelector('.toggle-label');
+  let isLight = false;
+  themeBtn.addEventListener('click', () => {
+    isLight = !isLight;
+    document.body.classList.toggle('light', isLight);
+    icon.textContent = isLight ? '🌙' : '☀️';
+    label.textContent = isLight ? 'Dark' : 'Light';
+    // Fix exp-dot bg to match section bg in dark mode
+    document.querySelectorAll('.exp-dot').forEach(d => {
+      d.style.background = isLight ? 'var(--navy)' : 'var(--navy)';
+    });
+  });
+
   // ── Hamburger menu
   const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobileMenu');
